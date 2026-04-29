@@ -84,6 +84,43 @@
         </div>
       </section>
 
+      <section id="slide-prd-example">
+        <h2><i class="fa-solid fa-magnifying-glass" style="color:var(--primary-color)"></i> 实际 PRD 摘要 — prd.md</h2>
+        <div class="content">
+          <div style="display: grid; grid-template-columns: 1fr 1.4fr; gap: 20px;">
+            <div>
+              <h3 style="margin-top:0">文档结构</h3>
+              <div class="card" style="font-size: 13pt; line-height: 1.8;">
+                <p><strong style="color:var(--secondary-color)">1.</strong> 项目概述</p>
+                <p><strong style="color:var(--secondary-color)">2.</strong> 技术栈架构</p>
+                <p><strong style="color:var(--secondary-color)">3.</strong> 数据模型 (Schema)</p>
+                <p><strong style="color:var(--secondary-color)">4.</strong> UI/UX 设计规范 <span class="text-muted">★重点</span></p>
+                <p><strong style="color:var(--secondary-color)">5.</strong> API 接口定义 (契约)</p>
+                <p><strong style="color:var(--secondary-color)">6.</strong> 开发环境与工作流</p>
+                <p><strong style="color:var(--secondary-color)">7.</strong> 分阶段实施步骤</p>
+              </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <div class="card" style="font-size: 12pt; border-left: 3px solid var(--primary-color);">
+                <p class="text-muted" style="font-size: 11pt; margin-bottom: 4px;">&#9654; 技术选型 — 写清楚"为什么"</p>
+                <p style="color: var(--accent-green)">K8s 交互：sh 库 + kubectl 命令（不同集群运行不同版本 K8s，官方 kubernetes Python 客户端对 K8s 版本耦合较强，通过 sh 调用 kubectl 可获得更通用的跨版本兼容性）</p>
+              </div>
+              <div class="card" style="font-size: 12pt; border-left: 3px solid var(--primary-color);">
+                <p class="text-muted" style="font-size: 11pt; margin-bottom: 4px;">&#9654; API 契约 — 精确到参数和逻辑</p>
+                <p style="color: var(--accent-green)">GET /api/pods — Query: cluster_id(必填), keyword(必填)<br>后端逻辑：根据 cluster_id 获取 kubeconfig_path，调用 kubectl get pods -A -o json，按 keyword 模糊匹配过滤</p>
+              </div>
+              <div class="card" style="font-size: 12pt; border-left: 3px solid var(--secondary-color);">
+                <p class="text-muted" style="font-size: 11pt; margin-bottom: 4px;">&#9654; UI 交互 — 具体到组件和行为</p>
+                <p style="color: var(--accent-green)">PROD 环境时 Header 背景变微红色(bg-red-50)；Kill 按钮触发 el-popconfirm 气泡确认，PROD 下提示"当前是生产环境，确认强制重启？"</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footnote">
+          <p>关键：约束越具体，AI 产出质量越高</p>
+        </div>
+      </section>
+
       <section id="slide-4">
         <h2><i class="fa-solid fa-list-check" style="color:var(--primary-color)"></i> 分阶段实现 — 让 AI 步步为营</h2>
         <div class="content">
