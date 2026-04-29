@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code 落地实践分享</title>
+
+  <!-- Reveal.js core -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Chart.js for data visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <section id="title" class="section-divider" data-state="is-section-divider">
+        <h1>Claude Code 落地实践</h1>
+        <p class="subtitle">以 ZPod 项目为例 — 从 PRD 到上线的 AI 全栈开发</p>
+        <p class="tech-stack"><i class="fa-brands fa-vuejs"></i> Vue 3 &nbsp;+&nbsp; <i class="fa-brands fa-python"></i> FastAPI &nbsp;+&nbsp; <i class="fa-brands fa-docker"></i> Docker &nbsp;+&nbsp; K8s</p>
+      </section>
+
+      <section id="demo">
+        <h2><i class="fa-solid fa-desktop" style="color:var(--primary-color)"></i> ZPod — 项目成果</h2>
+        <div class="content">
+          <p class="text-lg">轻量级多集群 K8s Pod 管理控制台，<strong>全程 Claude Code 生成</strong>：前后端代码、Dockerfile、部署脚本、文档</p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 16px;">
+            <div style="text-align: center;">
+              <img src="img1.png" alt="Pod 管理主页" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.5); border: 1px solid #334155;">
+              <p class="text-muted" style="margin-top: 8px; font-size: 13pt;">Pod 搜索与管理</p>
+            </div>
+            <div style="text-align: center;">
+              <img src="img2.png" alt="资源规格页面" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.5); border: 1px solid #334155;">
+              <p class="text-muted" style="margin-top: 8px; font-size: 13pt;">资源规格总览</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="divider-1" class="section-divider" data-state="is-section-divider">
+        <h1><i class="fa-solid fa-rocket"></i> 核心工作流</h1>
+        <p>PRD 驱动 &rarr; 分阶段实现 &rarr; 远程部署验证</p>
+      </section>
+
+      <section id="slide-3">
+        <h2><i class="fa-solid fa-file-lines" style="color:var(--primary-color)"></i> PRD 驱动开发</h2>
+        <div class="content">
+          <p class="text-xl"><strong>第一步不是写代码，而是和 Claude Code 一起完善 PRD</strong></p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 12px;">
+            <div class="card-accent">
+              <h3 style="margin-top:0">PRD 包含什么</h3>
+              <ul>
+                <li>技术栈选型 + 选择理由</li>
+                <li>数据模型（表结构定义）</li>
+                <li>API 契约（路径、参数、权限）</li>
+                <li>UI 交互规范（布局、颜色、防误操作）</li>
+                <li>开发环境与部署方式</li>
+              </ul>
+            </div>
+            <div>
+              <h3 style="margin-top:0">为什么有效</h3>
+              <ul>
+                <li>给 AI <strong>明确的边界和约束</strong></li>
+                <li>可分阶段执行，每步目标清晰</li>
+                <li>PRD 本身成为项目文档</li>
+              </ul>
+              <div class="good-example" style="margin-top:14px">
+                <p><i class="fa-solid fa-check" style="color:var(--accent-green)"></i> <code>用 sh 库调用 kubectl，原因是跨版本兼容</code></p>
+              </div>
+              <div class="bad-example" style="margin-top:10px">
+                <p><i class="fa-solid fa-xmark" style="color:var(--accent-red)"></i> <code>帮我写一个 k8s 管理系统</code></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="slide-4">
+        <h2><i class="fa-solid fa-list-check" style="color:var(--primary-color)"></i> 分阶段实现 — 让 AI 步步为营</h2>
+        <div class="content">
+          <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 30px;">
+            <div>
+              <div class="phase-item"><p class="phase-num">1</p><p>项目骨架与容器基础设施</p></div>
+              <div class="phase-item"><p class="phase-num">2</p><p>数据库模型与初始化种子数据</p></div>
+              <div class="phase-item"><p class="phase-num">3</p><p>核心 K8s 逻辑（kubectl 封装）</p></div>
+              <div class="phase-item"><p class="phase-num">4</p><p>FastAPI 全部路由（认证 + CRUD）</p></div>
+              <div class="phase-item"><p class="phase-num">5</p><p>前端框架搭建（Vue3 + Element Plus）</p></div>
+              <div class="phase-item"><p class="phase-num">6</p><p>前端页面联调 + 全流程验证</p></div>
+            </div>
+            <div class="card-warn">
+              <h3 style="margin-top:0"><i class="fa-solid fa-lightbulb"></i> Tips</h3>
+              <ul>
+                <li><strong>一次对话做一个 Phase</strong>，避免上下文过载</li>
+                <li>每个 Phase 结束<strong>部署验证</strong>，再进入下一阶段</li>
+                <li>发现问题<strong>立即修</strong>，不要积累到最后</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="slide-5">
+        <h2><i class="fa-solid fa-server" style="color:var(--primary-color)"></i> 远程部署闭环</h2>
+        <div class="content">
+          <p class="text-xl">Claude Code <strong>直接操作远程环境</strong>，本地无需任何运行时</p>
+          <div class="flow">
+            <p class="flow-step"><i class="fa-solid fa-code"></i> 编码</p>
+            <p class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></p>
+            <p class="flow-step"><i class="fa-solid fa-upload"></i> rsync 同步</p>
+            <p class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></p>
+            <p class="flow-step"><i class="fa-brands fa-docker"></i> 构建</p>
+            <p class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></p>
+            <p class="flow-step"><i class="fa-solid fa-check-circle"></i> 验证</p>
+          </div>
+          <pre><code>#!/bin/bash
+rsync -avz --delete \
+  --exclude '.git' --exclude 'node_modules' \
+  ./ maodf@nuc2:/home/maodf/sandbox/zpod/
+ssh maodf@nuc2 "cd /home/maodf/sandbox/zpod && docker compose up -d --build"</code></pre>
+          <div class="card" style="margin-top: 12px;">
+            <p><i class="fa-solid fa-circle-info" style="color:var(--primary-color)"></i> Claude Code 直接执行 <code>sync_and_run.sh</code>，看到构建输出和报错，形成快速迭代闭环</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="divider-2" class="section-divider" data-state="is-section-divider">
+        <h1><i class="fa-solid fa-wand-magic-sparkles"></i> 实用技巧</h1>
+        <p>/btw &middot; /rewind &middot; CLAUDE.md &middot; 对话管理</p>
+      </section>
+
+      <section id="slide-7">
+        <h2><i class="fa-solid fa-comment-dots" style="color:var(--primary-color)"></i> /btw — 不打断工作流的灵感捕捉</h2>
+        <div class="content">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+            <div>
+              <h3 style="margin-top:0">场景</h3>
+              <p>AI 正在帮你实现功能 A，你突然想到功能 B 的改进</p>
+              <div class="bad-example" style="margin-top: 14px;">
+                <p><i class="fa-solid fa-xmark" style="color:var(--accent-red)"></i> <strong>传统做法</strong></p>
+                <p>等 A 做完再说，或打断当前任务 &rarr; 上下文混乱</p>
+              </div>
+              <div class="good-example" style="margin-top: 12px;">
+                <p><i class="fa-solid fa-check" style="color:var(--accent-green)"></i> <strong>使用 /btw</strong></p>
+                <p>随时插入想法，AI 记住并在合适时机处理</p>
+              </div>
+            </div>
+            <div class="card-accent">
+              <h3 style="margin-top:0">实际体验</h3>
+              <p>开发 ZPod 过程中，在实现后端接口时：</p>
+              <pre style="margin-top:10px"><code>/btw 前端 Kill 按钮在 PROD
+环境下应该用红色确认框</code></pre>
+              <p style="margin-top:12px">AI 继续完成当前接口开发，<strong>到前端阶段时自动应用了这个想法</strong></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="slide-8">
+        <h2><i class="fa-solid fa-rotate-left" style="color:var(--primary-color)"></i> /rewind — 精确回退的后悔药</h2>
+        <div class="content">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+            <div>
+              <h3 style="margin-top:0">是什么</h3>
+              <p>回溯到对话中的某个节点，<strong>撤销之后的所有文件更改</strong></p>
+              <ul style="margin-top: 14px;">
+                <li>比 <code>git checkout</code> 更精确 — 它知道哪些文件改过</li>
+                <li>即使<strong>没有 commit</strong>，也能精确回退</li>
+                <li>回退的是<strong>对话中的操作步骤</strong>，不是 git commit</li>
+              </ul>
+            </div>
+            <div>
+              <h3 style="margin-top:0">使用场景</h3>
+              <div class="card" style="margin-bottom: 12px;">
+                <p><i class="fa-solid fa-bug" style="color:var(--accent-red)"></i> 让 AI 重构了一段代码，结果跑不通</p>
+                <p style="margin-top: 8px;"><i class="fa-solid fa-arrow-right" style="color:var(--primary-color)"></i> <code>/rewind</code> 一键回到重构前</p>
+              </div>
+              <div class="card">
+                <p><i class="fa-solid fa-code-branch" style="color:var(--secondary-color)"></i> AI 修改了多个文件，方向不对</p>
+                <p style="margin-top: 8px;"><i class="fa-solid fa-arrow-right" style="color:var(--primary-color)"></i> <code>/rewind</code> 全部还原，换个思路重来</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="slide-bash">
+        <h2><i class="fa-solid fa-terminal" style="color:var(--primary-color)"></i> ! Bash Mode — 随时切换到终端</h2>
+        <div class="content">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+            <div>
+              <h3 style="margin-top:0">是什么</h3>
+              <p>在 Claude Code 提示符中输入 <code>!</code> 前缀，<strong>直接执行 shell 命令</strong></p>
+              <ul style="margin-top: 14px;">
+                <li>无需退出对话，<strong>随时切换</strong>到终端</li>
+                <li>命令输出直接进入对话上下文</li>
+                <li>适合快速查看文件、检查状态、运行脚本</li>
+              </ul>
+              <div class="good-example" style="margin-top: 14px;">
+                <p><i class="fa-solid fa-check" style="color:var(--accent-green)"></i> <code>! ls</code> &nbsp; <code>! git status</code> &nbsp; <code>! docker ps</code></p>
+              </div>
+            </div>
+            <div style="text-align: center; display: flex; flex-direction: column; justify-content: center;">
+              <img src="bash_mdoe.png" alt="Bash Mode 截图" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.5); border: 1px solid #334155;">
+              <p class="text-muted" style="margin-top: 8px; font-size: 13pt;">输入 ! 前缀即可执行 shell 命令</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="slide-9">
+        <h2><i class="fa-solid fa-toolbox" style="color:var(--primary-color)"></i> 更多实用技巧</h2>
+        <div class="content">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+            <div class="card" style="margin-bottom: 10px;">
+              <h3 style="margin-top:0"><i class="fa-solid fa-book"></i> CLAUDE.md</h3>
+              <p>项目级别的提示词，每次对话<strong>自动加载</strong></p>
+              <ul>
+                <li>定义编码规范、项目约束</li>
+                <li>常用命令和部署方式</li>
+              </ul>
+            </div>
+            <div class="card" style="margin-bottom: 10px;">
+              <h3 style="margin-top:0"><i class="fa-solid fa-comments"></i> 对话管理</h3>
+              <p>保持 AI 上下文<strong>聚焦高效</strong></p>
+              <ul>
+                <li>长对话及时开新对话</li>
+                <li>用清晰指令，不用含糊描述</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3 style="margin-top:0"><i class="fa-solid fa-arrows-spin"></i> 迭代策略</h3>
+              <p>先出初版 &rarr; 部署验证 &rarr; 再提修改</p>
+              <p>比一次性描述所有需求<strong>效果更好</strong></p>
+            </div>
+            <div class="card">
+              <h3 style="margin-top:0"><i class="fa-solid fa-file-pen"></i> AI 写文档</h3>
+              <p>你提供<strong>要点</strong>，AI 产出结构化文档</p>
+              <p>PRD、设计文档、README 都适用</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="slide-10">
+        <h2><i class="fa-solid fa-flag-checkered" style="color:var(--primary-color)"></i> 关键 Takeaways</h2>
+        <div class="content">
+          <div class="takeaway">
+            <p class="takeaway-num">1</p>
+            <p class="text-xl"><strong>先文档后代码</strong> — PRD 是给 AI 最好的提示词</p>
+          </div>
+          <div class="takeaway">
+            <p class="takeaway-num">2</p>
+            <p class="text-xl"><strong>分阶段交付</strong> — 每个 Phase 部署验证，快速迭代</p>
+          </div>
+          <div class="takeaway">
+            <p class="takeaway-num">3</p>
+            <p class="text-xl"><strong>提供可测试环境</strong> — 让 AI 能部署、能验证、能修复</p>
+          </div>
+          <div class="takeaway">
+            <p class="takeaway-num">4</p>
+            <p class="text-xl"><strong>善用工具</strong> — /btw 记录灵感，/rewind 快速回退</p>
+          </div>
+          <div class="takeaway">
+            <p class="takeaway-num">5</p>
+            <p class="text-xl"><strong>人驱动方向，AI 驱动执行</strong> — 你是架构师，AI 是全栈工程师</p>
+          </div>
+        </div>
+        <div class="footnote text-center">
+          <p>ZPod — 全程 Claude Code 开发</p>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/chart/plugin.js"></script>
+  <script>
+    Reveal.initialize({
+      width: 1280,
+      height: 720,
+      margin: 0,
+      controls: true,
+      progress: true,
+      slideNumber: false,
+      hash: true,
+      transition: 'slide',
+      center: false,
+      plugins: [ RevealChart ],
+      chart: {
+        defaults: Object.assign({
+          color: 'rgba(0, 0, 0, 0.8)',
+          borderColor: 'rgba(0, 0, 0, 0.8)',
+          devicePixelRatio: 2
+        }, window.location.search.includes('export') ? { animation: false } : {})
+      }
+    });
+  </script>
+</body>
+</html>
