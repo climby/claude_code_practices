@@ -348,3 +348,30 @@
   color: var(--muted-color);
   margin-top: 20px;
 }
+
+.cross-out {
+  position: relative;
+  display: inline-block;
+  color: #64748b;
+  margin: 0 1px;
+}
+
+.cross-out::before,
+.cross-out::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -2px;
+  right: -2px;
+  height: 2px;
+  background: #f87171;
+  border-radius: 1px;
+}
+
+.cross-out::before {
+  transform: rotate(45deg);
+}
+
+.cross-out::after {
+  transform: rotate(-45deg);
+}
